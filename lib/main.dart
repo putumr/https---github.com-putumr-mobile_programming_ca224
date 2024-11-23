@@ -43,13 +43,13 @@ class _CountryListPageState extends State<CountryListPage> {
       code: 'ID',
       name: 'Indonesia',
       description: 'Negara kepulauan terbesar di dunia.',
-      flagUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg',
+      flagUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png',
     ),
     Country(
       code: 'US',
       name: 'Amerika Serikat',
       description: 'Negara dengan ekonomi terbesar di dunia.',
-      flagUrl: 'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg',
+      flagUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg/1920px-Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg.png',
     ),
   ];
 
