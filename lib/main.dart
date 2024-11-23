@@ -4,20 +4,6 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Data Negara',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: CountryListPage(),
-    );
-  }
-}
-
 class Country {
   String code;
   String name;
@@ -32,103 +18,121 @@ class Country {
   });
 }
 
-class CountryListPage extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _CountryListPageState createState() => _CountryListPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Data Negara',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HomeScreen(),
+    );
+  }
 }
 
-class _CountryListPageState extends State<CountryListPage> {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   List<Country> countries = [
     Country(
       code: 'ID',
       name: 'Indonesia',
-      description: 'Negara kepulauan terbesar di dunia.',
-      flagUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png',
+      description: 'Negara di Asia Tenggara.',
+      flagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png',
     ),
     Country(
       code: 'US',
-      name: 'Amerika Serikat',
-      description: 'Negara dengan ekonomi terbesar di dunia.',
-      flagUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg/1920px-Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg.png',
+      name: 'United States',
+      description: 'Negara di Amerika Utara.',
+      flagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg/1920px-Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg.png',
     ),
   ];
 
-  void _addCountry(Country country) {
+  void addCountry(Country country) {
     setState(() {
       countries.add(country);
     });
   }
 
-  void _editCountry(int index, Country updatedCountry) {
+  void updateCountry(int index, Country country) {
     setState(() {
-      countries[index] = updatedCountry;
+      countries[index] = country;
     });
   }
 
-  void _deleteCountry(int index) {
+  void deleteCountry(int index) {
     setState(() {
       countries.removeAt(index);
     });
   }
 
-  void _showCountryForm({Country? country, int? index}) {
-    final codeController = TextEditingController(text: country?.code);
-    final nameController = TextEditingController(text: country?.name);
-    final descriptionController = TextEditingController(text: country?.description);
-    final flagUrlController = TextEditingController(text: country?.flagUrl);
+  void openAddUpdateScreen({Country? country, int? index}) {
+    final isEditing = country != null;
+    final codeController = TextEditingController(text: country?.code ?? '');
+    final nameController = TextEditingController(text: country?.name ?? '');
+    final descriptionController =
+        TextEditingController(text: country?.description ?? '');
+    final flagUrlController =
+        TextEditingController(text: country?.flagUrl ?? '');
 
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(country == null ? 'Tambah Negara' : 'Edit Negara'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextField(
-                  controller: codeController,
-                  decoration: InputDecoration(labelText: 'Kode Negara'),
-                ),
-                TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(labelText: 'Nama Negara'),
-                ),
-                TextField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Deskripsi'),
-                ),
-                TextField(
-                  controller: flagUrlController,
-                  decoration: InputDecoration(labelText: 'URL Gambar Bendera'),
-                ),
-              ],
-            ),
+      builder: (_) => AlertDialog(
+        title: Text(isEditing ? 'Edit Negara' : 'Tambah Negara'),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: codeController,
+                decoration: InputDecoration(labelText: 'Kode Negara'),
+              ),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Nama Negara'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Deskripsi Negara'),
+              ),
+              TextField(
+                controller: flagUrlController,
+                decoration: InputDecoration(labelText: 'URL Bendera'),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Batal'),
-            ),
-            TextButton(
-              onPressed: () {
-                final newCountry = Country(
-                  code: codeController.text,
-                  name: nameController.text,
-                  description: descriptionController.text,
-                  flagUrl: flagUrlController.text,
-                );
-                if (country == null) {
-                  _addCountry(newCountry);
-                } else if (index != null) {
-                  _editCountry(index, newCountry);
-                }
-                Navigator.pop(context);
-              },
-              child: Text('Simpan'),
-            ),
-          ],
-        );
-      },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Batal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final newCountry = Country(
+                code: codeController.text,
+                name: nameController.text,
+                description: descriptionController.text,
+                flagUrl: flagUrlController.text,
+              );
+
+              if (isEditing && index != null) {
+                updateCountry(index, newCountry);
+              } else {
+                addCountry(newCountry);
+              }
+
+              Navigator.pop(context);
+            },
+            child: Text(isEditing ? 'Perbarui' : 'Tambah'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -143,13 +147,10 @@ class _CountryListPageState extends State<CountryListPage> {
         itemBuilder: (context, index) {
           final country = countries[index];
           return Card(
-            margin: EdgeInsets.all(8.0),
+            margin: EdgeInsets.all(8),
             child: ListTile(
-              leading: Image.network(
-                country.flagUrl,
-                width: 50,
-                height: 50,
-                errorBuilder: (context, error, stackTrace) => Icon(Icons.broken_image),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(country.flagUrl),
               ),
               title: Text(country.name),
               subtitle: Text(country.description),
@@ -157,12 +158,15 @@ class _CountryListPageState extends State<CountryListPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => _showCountryForm(country: country, index: index),
+                    icon: Icon(Icons.edit, color: Colors.blue),
+                    onPressed: () => openAddUpdateScreen(
+                      country: country,
+                      index: index,
+                    ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => _deleteCountry(index),
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => deleteCountry(index),
                   ),
                 ],
               ),
@@ -171,7 +175,7 @@ class _CountryListPageState extends State<CountryListPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showCountryForm(),
+        onPressed: () => openAddUpdateScreen(),
         child: Icon(Icons.add),
       ),
     );
