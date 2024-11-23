@@ -1,16 +1,9 @@
-# flutter_application_8
+I PUTU ANANTA KUSUMADEWA MAHAPUTRA (220040168)
 
-A new Flutter project.
 
-## Getting Started
+berhasil menambah data
+![Screenshot 2024-11-24 001712](https://github.com/user-attachments/assets/3a8a7c20-cac0-491d-ac11-1da8e7cd63df)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+berhasil mebghapus data
+![Screenshot 2024-11-24 001452](https://github.com/user-attachments/assets/641fc8d3-4968-4b75-bea3-77d5e9713cb3)
