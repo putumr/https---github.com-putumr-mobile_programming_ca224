@@ -36,7 +36,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Country> countries = [
+  final List<Country> countries = [
     Country(
       code: 'ID',
       name: 'Indonesia',
@@ -146,37 +146,56 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: countries.length,
         itemBuilder: (context, index) {
           final country = countries[index];
-          return Card(
-            margin: EdgeInsets.all(8),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(country.flagUrl),
-              ),
-              title: Text(country.name),
-              subtitle: Text(country.description),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.edit, color: Colors.blue),
-                    onPressed: () => openAddUpdateScreen(
-                      country: country,
-                      index: index,
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => deleteCountry(index),
-                  ),
-                ],
-              ),
-            ),
+          return CountryCard(
+            country: country,
+            onEdit: () => openAddUpdateScreen(country: country, index: index),
+            onDelete: () => deleteCountry(index),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => openAddUpdateScreen(),
         child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class CountryCard extends StatelessWidget {
+  final Country country;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+
+  const CountryCard({
+    Key? key,
+    required this.country,
+    required this.onEdit,
+    required this.onDelete,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(country.flagUrl),
+        ),
+        title: Text(country.name),
+        subtitle: Text(country.description),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(Icons.edit, color: Colors.blue),
+              onPressed: onEdit,
+            ),
+            IconButton(
+              icon: Icon(Icons.delete, color: Colors.red),
+              onPressed: onDelete,
+            ),
+          ],
+        ),
       ),
     );
   }
